@@ -23,9 +23,9 @@ class Problem_Solver(ABC):
 
     def solve_problem(self):
         """
-            Uses data lines to solve problem. Calls process_data firts,
+            Use data lines to solve problem. Call process_data first,
             than solves problem case by case, transfers answers
-            to strings and returns their join
+            to strings and returns their join.
                 Output: str
         """
         data = self.process_data(self.data_lines)
@@ -39,7 +39,7 @@ class Problem_Solver(ABC):
     def get_data(self, test_mode):
         """
             Takes input according to problem statement, or uses test data.
-            Output: list of strings
+            Output: list of strings.
         """
         if test_mode:
             data_lines = TEST_CASE.split('\n')
@@ -56,7 +56,7 @@ class Problem_Solver(ABC):
     def process_data(self, data_lines):
         """
             Take list of the raw data and return only significant stuff.
-            Return list of data split to cases
+            Return list of data split to cases.
                 Input: data_lines: list of str.
                 Output: list: depends on particular problem.
         """
