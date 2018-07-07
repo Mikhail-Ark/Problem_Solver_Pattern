@@ -32,6 +32,8 @@ class Problem_Solver(ABC):
         case_answers = []
         for case in data:
             case_answer = self.solve_case(case)
+            if isinstance(case_answer, list):
+                case_answer = ' '.join(map(str, case_answer))
             case_answers.append(str(case_answer))
         answer_to_problem = ' '.join(case_answers)
         return answer_to_problem
