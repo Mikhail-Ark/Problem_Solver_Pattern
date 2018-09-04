@@ -42,8 +42,8 @@ class ProblemSolver(ABC):
         if test_data:
             self.test_mode = True
             self.test_data = test_data
-            self.test_answers = test_answer.split()
-            print("\nTest mode on.", end=' ')
+            self.test_answers = test_answer
+            print("\nTEST: Test mode on.", end=' ')
             if test_answer:
                 print("Answers are given.\n")
             else:
@@ -56,11 +56,18 @@ class ProblemSolver(ABC):
         self.answers = ''
 
         if self.test_mode:
+            if len(self.get_cases()) == 1:
+                self.test_answers = [self.test_answers]
+            elif len(self.get_cases()) == len(self.test_answers.split('\n')):
+                self.test_answers = [
+                    x.strip() for x in self.test_answers.split('\n')]
+            else:
+                self.test_answers = self.test_answers.split()
+                if len(self.get_cases()) != len(self.test_answers):
+                    print("TEST: Different number of cases and answers.\n")
+
             if not isinstance(self.cases, list):
                 raise TypeError("TEST: Data Processor does not return list.")
-            if len(self.cases) != len(self.test_answers):
-                print("TEST: Number of given cases and answers are differ.\n")
-                self.test_answers = None
 
     def get_data(self):
         """Takes input - data to work with. Unite it to list.
@@ -78,7 +85,7 @@ class ProblemSolver(ABC):
             return self.data_lines
         except AttributeError:
             if self.test_mode:
-                data_lines = self.test_data.split('\n')
+                data_lines = [x.strip() for x in self.test_data.split('\n')]
             else:
                 data_lines = []
                 while True:
@@ -183,14 +190,14 @@ def check_method(method, inp, outp=None):
     """
     assert callable(method), "TEST: No method given to checker."
     assert isinstance(inp, tuple), "TEST: Method's args must be a tuple."
-    print("TEST: Checking method {}.".format(method.__name__))
-    print("TEST: Arguments are: {}".format(inp))
+    print('TEST: Checking method "{}".'.format(method.__name__))
+    print("TEST: Arguments are: {}\n".format(', '.join([str(x) for x in inp])))
     start_time = time()
 
     result = method(*inp)
 
     solving_time = round(time() - start_time, 2)
-    print("TEST: Output:\nTEST: {}".format(result))
+    print("TEST: Output:\nTEST: {}\n".format(result))
     if outp:
         if result == outp:
             print("TEST: Correct! ")
